@@ -1,5 +1,6 @@
-naverWeather
+naverWeather [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ---
+*used in: [SNUBot](https://github.com/norangLemon/snuBot)*
 
 * [naver 날씨](http://weather.naver.com/rgn/cityWetrCity.nhn?cityRgnCd=CT001001)정보를 긁어온다.
 
