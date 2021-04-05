@@ -76,13 +76,16 @@ class naverWeather():
         self.search()
 
     def search(self):
-        naverWeather.session.encoding = 'utf-8'
+        naverWeather.session.encoding = 'UTF-8'
 
         req = naverWeather.session.get(self.addr)
         soup = BeautifulSoup(req.text, "html.parser")
-        table = soup.find(class_="tbl_weather tbl_today3")
-       
-        t_ary = list(table.stripped_strings)
+        print(soup)
+        ## table = soup.find(class_="tbl_weather tbl_today3")
+        now_temp = soup.find('strong', {'class': 'current'}).text            # now_temp : 현재온도
+        print(now_temp)
+
+        ## t_ary = list(table.stripped_strings)
 
         self.result = (
                 "["+ self.area + " 날씨 검색 결과]\n"
