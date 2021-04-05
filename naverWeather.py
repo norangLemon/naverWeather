@@ -80,21 +80,21 @@ class naverWeather():
 
         req = naverWeather.session.get(self.addr)
         soup = BeautifulSoup(req.text, "html.parser")
-        print(soup)
-        ## table = soup.find(class_="tbl_weather tbl_today3")
         now_temp = soup.find('strong', {'class': 'current'}).text            # now_temp : 현재온도
-        print(now_temp)
+        now_humidity = soup.find('dd', {'class': 'desc'}).text               # now_humidity : 현재습도
+        print(now_humidity)
 
-        ## t_ary = list(table.stripped_strings)
 
         self.result = (
                 "["+ self.area + " 날씨 검색 결과]\n"
-                + "- 오늘(" + t_ary[3] + ")\n"
-                + "\t오전 - " + t_ary[7] + "℃(" +  t_ary[9] + ", 강수확률 " + t_ary[11] + ")\n"
-                + "\t오후 - " + t_ary[13] + "℃(" +  t_ary[15] + ", 강수확률 " + t_ary[17] + ")\n"
-                + "- 내일(" + t_ary[5] + ")\n"
-                + "\t오전 - " + t_ary[19] + "℃(" +  t_ary[21] + ", 강수확률 " + t_ary[23] + ")\n"
-                + "\t오후 - " + t_ary[25] + "℃(" +  t_ary[27] + ", 강수확률 " + t_ary[29] + ")\n"
+                + now_temp
+                + "\t현재 습도" + now_humidity
+                ##+ "- 오늘()\n"
+                ##+ "\t오전 - " + t_ary[7] + "℃(" +  t_ary[9] + ", 강수확률 " + t_ary[11] + ")\n"
+                ##+ "\t오후 - " + t_ary[13] + "℃(" +  t_ary[15] + ", 강수확률 " + t_ary[17] + ")\n"
+                ##+ "- 내일(" + t_ary[5] + ")\n"
+                ##+ "\t오전 - " + t_ary[19] + "℃(" +  t_ary[21] + ", 강수확률 " + t_ary[23] + ")\n"
+                ##+ "\t오후 - " + t_ary[25] + "℃(" +  t_ary[27] + ", 강수확률 " + t_ary[29] + ")\n"
                 )
 
     def getWeather(self):
