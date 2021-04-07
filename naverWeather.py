@@ -80,22 +80,28 @@ class naverWeather():
 
         req = naverWeather.session.get(self.addr)
         soup = BeautifulSoup(req.text, "html.parser")
-        now_temp = soup.find('strong', {'class': 'current'}).text            # now_temp : 현재온도
-        now_humidity = soup.find('dd', {'class': 'desc'}).text               # now_humidity : 현재습도
-        print(now_humidity)
+
+        summary = soup.find('span', {'class': 'weather before_slash'}).text   # summary : 최종 날씨 요약
+        now_temper = soup.find('strong', {'class': 'current'}).text           # now_temper : 현재온도
+        now_rain = soup.find('em', {'class': 'value'}).text                   # now_rain : 강수확률
+        now_list = soup.find_all('dd', {'class': 'desc'})                     # now_tbl : 습도,풍속, 체감온도 list
+        now_humidity = now_list[0].get_text()                                 # now_humidity : 현재습도
+        now_wind = now_list[1].get_text()                                     # now_wind : 현재 풍속
+        now_body = now_list[2].get_text()                                     # now_body : 체감 온도
+
+
+
 
 
         self.result = (
-                "["+ self.area + " 날씨 검색 결과]\n"
-                + now_temp
-                + "\t현재 습도" + now_humidity
-                ##+ "- 오늘()\n"
-                ##+ "\t오전 - " + t_ary[7] + "℃(" +  t_ary[9] + ", 강수확률 " + t_ary[11] + ")\n"
-                ##+ "\t오후 - " + t_ary[13] + "℃(" +  t_ary[15] + ", 강수확률 " + t_ary[17] + ")\n"
-                ##+ "- 내일(" + t_ary[5] + ")\n"
-                ##+ "\t오전 - " + t_ary[19] + "℃(" +  t_ary[21] + ", 강수확률 " + t_ary[23] + ")\n"
-                ##+ "\t오후 - " + t_ary[25] + "℃(" +  t_ary[27] + ", 강수확률 " + t_ary[29] + ")\n"
-                )
+            "출처 : " + self.addr
+                + "\n\n["+ self.area + " 날씨 검색 결과]\n"
+                + now_temper + " ( " + summary + " )"
+                + "\n습도 : " + now_humidity
+                + "\t강수 : " + now_rain +"%"
+                + "\n바람 : " + now_wind
+                + "\t체감 : " + now_body
+        )
 
     def getWeather(self):
         if not self.result:
