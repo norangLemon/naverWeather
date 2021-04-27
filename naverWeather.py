@@ -6,7 +6,7 @@ class naverWeather():
     session = requests.Session()
     addr = "https://weather.naver.com/today/"
     map_cityNum = {     # 지역 번호 매핑
-            '백령':"11720330", '서울':"09140104", '춘천':"01110675", '강릉':'01150615','청주':"16111120" ,
+            '백령':"11720330", '서울':"09140104", '춘천':"01110675", '강릉':'01150615', '청주':"16111120",
             '수원':"07110101", '안동':"04170690", '울릉':"04940320", '독도':"04940320", '대전':"07110101",
             '전주':"13113135", '대구':"06110101", '광주':"05110101", '목포':'12110152', '울산':"10110101",
             '제주':"14130116", '여수':"12130127", '부산':"08110580"
@@ -35,33 +35,24 @@ class naverWeather():
         summary = soup.find('span', {'class': 'weather before_slash'}).text   # summary : 오늘 최종 날씨 요약
         now_temper = soup.find('strong', {'class': 'current'}).text           # now_temper : 현재온도
         now_list1 = soup.find_all('dd', {'class': 'desc'})                    # now_list1 : list(습도, 풍속, 체감온도)
-        now_rain = now_list1[0].get_text()                                    # now_rain : 현재 습도
-        now_humidity = now_list1[1].get_text()                                # now_humidity : 현재 강수 확률
-        now_wind = now_list1[2].get_text()                                    # now_wind : 현재 풍속
-        now_body = now_list1[3].get_text()                                    # now_body : 현재 체감 온도
         now_list2 = soup.find_all('em', {'class': 'level_text'})              # now_list2 : list(미세먼지, 초미세먼지, 자외선)
-        now_dust1 = now_list2[0].get_text()                                   # now_dust1 : 현재 미세먼지
-        now_dust2 = now_list2[1].get_text()                                   # now_dust2 : 현재 초미세먼지
-        now_uv = now_list2[2].get_text()                                      # now_uv : 현재 자외선
-        now_list3 = soup.find_all('strong', {'class': 'info_ttl'})            # now_list3 : list(현재 관련 기사)
-        now_news1 = now_list3[0].get_text()
-        now_news2 = now_list3[1].get_text()
+        now_list3 = soup.find_all('strong', {'class': 'info_ttl'})            # now_list3 : list(관련 기사)
 
 
         self.result = (
             "출처 : " + self.addr
                 + "\n\n["+ self.area + " 날씨 검색 결과]\n"
                 + now_temper + " ( " + summary + " )"
-                + "\n강수 : " + now_rain
-                + "\t습도 : " + now_humidity
-                + "\n바람 : " + now_wind
-                + "\t체감 : " + now_body
-                + "\n미세먼지 : " + now_dust1
-                + "\t초미세먼지 : " + now_dust2
-                + "\t자외선 : " + now_uv
-                + "\n\n날씨뉴스"
-                + "\n"+now_news1
-                + "\n"+ now_news2
+                + "\n강수 : " + now_list1[0].get_text()
+                + "\t습도 : " + now_list1[1].get_text()
+                + "\n바람 : " + now_list1[2].get_text()
+                + "\t체감 : " + now_list1[3].get_text()
+                + "\n미세먼지 : " + now_list2[0].get_text()
+                + "\t초미세먼지 : " + now_list2[1].get_text()
+                + "\t자외선 : " + now_list2[2].get_text()
+                + "\n\n뉴스 요약 코맨트"
+                + "\n"+ now_list3[0].get_text()
+                + "\n"+ now_list3[1].get_text()
 
         )
 
