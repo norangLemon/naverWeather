@@ -43,6 +43,10 @@ class naverWeather():
         now_dust1 = now_list2[0].get_text()                                   # now_dust1 : 현재 미세먼지
         now_dust2 = now_list2[1].get_text()                                   # now_dust2 : 현재 초미세먼지
         now_uv = now_list2[2].get_text()                                      # now_uv : 현재 자외선
+        now_list3 = soup.find_all('strong', {'class': 'info_ttl'})            # now_list3 : list(현재 관련 기사)
+        now_news1 = now_list3[0].get_text()
+        now_news2 = now_list3[1].get_text()
+
 
         self.result = (
             "출처 : " + self.addr
@@ -55,6 +59,10 @@ class naverWeather():
                 + "\n미세먼지 : " + now_dust1
                 + "\t초미세먼지 : " + now_dust2
                 + "\t자외선 : " + now_uv
+                + "\n\n날씨뉴스"
+                + "\n"+now_news1
+                + "\n"+ now_news2
+
         )
 
     def getWeather(self):
