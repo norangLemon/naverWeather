@@ -32,14 +32,17 @@ class naverWeather():
         req = naverWeather.session.get(self.addr)
         soup = BeautifulSoup(req.text, "html.parser")
 
-        summary = soup.find('span', {'class': 'weather before_slash'}).text   # summary : 최종 날씨 요약
+        summary = soup.find('span', {'class': 'weather before_slash'}).text   # summary : 오늘 최종 날씨 요약
         now_temper = soup.find('strong', {'class': 'current'}).text           # now_temper : 현재온도
-        now_list = soup.find_all('dd', {'class': 'desc'})                     # now_tbl : list(습도, 풍속, 체감온도)
-        now_rain = now_list[0].get_text()                                     # now_humidity : 현재 강수 확률
-        now_humidity = now_list[1].get_text()                                 # now_rain : 현재 습도
-        now_wind = now_list[2].get_text()                                     # now_wind : 현재 풍속
-        now_body = now_list[3].get_text()                                     # now_body : 체감 온도
-
+        now_list1 = soup.find_all('dd', {'class': 'desc'})                    # now_list1 : list(습도, 풍속, 체감온도)
+        now_rain = now_list1[0].get_text()                                    # now_rain : 현재 습도
+        now_humidity = now_list1[1].get_text()                                # now_humidity : 현재 강수 확률
+        now_wind = now_list1[2].get_text()                                    # now_wind : 현재 풍속
+        now_body = now_list1[3].get_text()                                    # now_body : 현재 체감 온도
+        now_list2 = soup.find_all('em', {'class': 'level_text'})              # now_list2 : list(미세먼지, 초미세먼지, 자외선)
+        now_dust1 = now_list2[0].get_text()                                   # now_dust1 : 현재 미세먼지
+        now_dust2 = now_list2[1].get_text()                                   # now_dust2 : 현재 초미세먼지
+        now_uv = now_list2[2].get_text()                                      # now_uv : 현재 자외선
 
         self.result = (
             "출처 : " + self.addr
@@ -49,7 +52,9 @@ class naverWeather():
                 + "\t습도 : " + now_humidity
                 + "\n바람 : " + now_wind
                 + "\t체감 : " + now_body
-
+                + "\n미세먼지 : " + now_dust1
+                + "\t초미세먼지 : " + now_dust2
+                + "\t자외선 : " + now_uv
         )
 
     def getWeather(self):
