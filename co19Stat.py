@@ -6,16 +6,16 @@ from selenium import webdriver
 
 class co19Stat():
     session = requests.Session()
+    coronic_addr = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="   # 현재 확진자 수 url
+    dis_addr = "http://ncov.mohw.go.kr/regSocdisBoardView.do?brdId=6&brdGubun=68&ncvContSeq=495"                            # 거리 두기 단계 url
     map_cityNum = {  # 지역 번호 매핑
-        '서울': 0, '부산': 1, '대구': 2, '인천': 3, '광주': 4, '대전': 5, '울산': 6,
-        '세종': 7, '경기': 8, '강원': 9, '충북': 10, '충남': 11, '전북': 12, '전남': 13,
-        '경북': 14, '경남': 15, '제주': 16
+        '서울': 0, '부산': 1, '대구': 2, '인천': 3, '광주': 4, '대전': 5, '울산': 6, '세종': 7, '경기': 8, '수원': 8,
+        '강원': 9, '춘천': 9, '강릉': 9, '충북': 10, '청주': 10, '충남': 11, '전북': 12, '전주': 12, '전남': 13,
+        '목포': 13, '여수': 13, '경북': 14, '안동': 14, '경남': 15, '제주': 16
     }
 
     def __init__(self, area="대구"):
         self.area = area
-        self.coronic_addr = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun=" # 현재 확진자 수 url
-        self.dis_addr = "http://ncov.mohw.go.kr/regSocdisBoardView.do?brdId=6&brdGubun=68&ncvContSeq=495"                          # 거리 두기 단계 url
         self.cityNum = co19Stat.map_cityNum[area]
         self.result = None
 
@@ -30,14 +30,14 @@ class co19Stat():
         coronic_list1 = soup1.find_all('span', {'class': 'num'})     # coronic_list1 = 누적 확신자
         coronic_list2 = soup1.find_all('span', {'class': 'before'})  # coronic_list2 = 신규 확신자
 
+
         # selenium 사용, chrome기준, cromedriver의 경로
         driver = webdriver.Chrome(executable_path='cromedriver의 경로')
         link = self.dis_addr.format(1)
         driver.get(link)
-        driver.implicitly_wait(1)
+        driver.implicitly_wait(0.5)             # 사용자의 네트워크 환경 및 CPU 사양에 따라 값 조정
         html = driver.page_source
         soup2 = BeautifulSoup(html, "html.parser")
-
 
         dis_list = soup2.find_all('span', {'class': 'num'})  # dis_list = 거리 두기 단계 리스트
         dis_stage = dis_list[self.cityNum].get_text()        # dis_stage = 현재 거리 두기 단계
@@ -62,12 +62,8 @@ class co19Stat():
             concept = "전국적 대유행"
             core_message = "전국적 대유행, 원칙적으로 집에 머무르며 다른 사람과 접촉 최소화"
 
-
-
-
-
         self.result = (
-             "\n\n[" + self.area + " covid-19 현황]"
+             "\n\n[" + self.area + " covid-19 현황] (해당지역)"
              + "\n\n누적 확인자(전일대비) : " + coronic_list1[self.cityNum].get_text() + coronic_list2[self.cityNum].get_text()
              + "\n거리 두기 단계 : " + dis_stage + "단계 (" + sortation + ")"
              + "\n개념 : "+ concept
