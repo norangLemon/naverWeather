@@ -1,12 +1,13 @@
 from naverWeather import *
 from co19Stat import *
-from selenium import webdriver
+
+print("지역을 입력하시오 : ")
+area = input()
+print(naverWeather(area).getWeather())
+print(co19Stat(area).getStat())
+print("\n\n\n[출처1] : " + naverWeather.addr + "\n[출처2] : " + co19Stat.dis_addr + "\n[출처3] : " + co19Stat.coronic_addr)
 
 
-print(naverWeather('대구').getWeather())
-print(co19Stat('서울').getStat())
-
-## driver = webdriver.Chrome(executable_path='/Users/ehdud/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Python 3.8/chromedriver.exe')
 
 
 
